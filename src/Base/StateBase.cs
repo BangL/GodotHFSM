@@ -1,5 +1,5 @@
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// The base class of all states.

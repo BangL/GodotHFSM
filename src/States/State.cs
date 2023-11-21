@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// The "normal" state class that can run code on Enter, on Logic and on Exit,

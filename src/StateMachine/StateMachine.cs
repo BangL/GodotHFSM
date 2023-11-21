@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 
 /**
- * Hierarchichal finite state machine for Unity
- * by Inspiaaa
+ * Hierarchichal finite state machine for Godot by BangL
+ * based on UnityHFSM 2.0.1 by Inspiaaa
  *
- * Version: 2.0.1
+ * Version: 0.0.1
  */
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// A finite state machine that can also be used as a state of a parent state machine to create
@@ -143,7 +143,7 @@ namespace UnityHFSM
 		private void EnsureIsInitializedFor(string context)
 		{
 			if (activeState == null)
-				throw UnityHFSM.Exceptions.Common.NotInitialized(context);
+				throw GodotHFSM.Exceptions.Common.NotInitialized(context);
 		}
 
 		/// <summary>
@@ -191,7 +191,7 @@ namespace UnityHFSM
 
 			if (!stateBundlesByName.TryGetValue(name, out bundle) || bundle.state == null)
 			{
-				throw UnityHFSM.Exceptions.Common.StateNotFound(name.ToString(), context: "Switching states");
+				throw GodotHFSM.Exceptions.Common.StateNotFound(name.ToString(), context: "Switching states");
 			}
 
 			activeTransitions = bundle.transitions ?? noTransitions;
@@ -361,7 +361,7 @@ namespace UnityHFSM
 		{
 			if (!startState.hasState)
 			{
-				throw UnityHFSM.Exceptions.Common.MissingStartState(context: "Running OnEnter of the state machine.");
+				throw GodotHFSM.Exceptions.Common.MissingStartState(context: "Running OnEnter of the state machine.");
 			}
 
 			// Clear any previous pending transition from the last run.
@@ -728,7 +728,7 @@ namespace UnityHFSM
 
 			if (!stateBundlesByName.TryGetValue(name, out bundle) || bundle.state == null)
 			{
-				throw UnityHFSM.Exceptions.Common.StateNotFound(name.ToString(), context: "Getting a state");
+				throw GodotHFSM.Exceptions.Common.StateNotFound(name.ToString(), context: "Getting a state");
 			}
 
 			return bundle.state;
@@ -743,7 +743,7 @@ namespace UnityHFSM
 
 				if (subFsm == null)
 				{
-					throw UnityHFSM.Exceptions.Common.QuickIndexerMisusedForGettingState(name.ToString());
+					throw GodotHFSM.Exceptions.Common.QuickIndexerMisusedForGettingState(name.ToString());
 				}
 
 				return subFsm;

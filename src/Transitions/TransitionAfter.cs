@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// A class used to determine whether the state machine should transition to another state

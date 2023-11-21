@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// Base class of states that support custom actions.

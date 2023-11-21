@@ -1,23 +1,25 @@
-using UnityEngine;
+using Godot;
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// Default timer that calculates the elapsed time based on Time.time.
 	/// </summary>
 	public class Timer : ITimer
 	{
+		private static float GodotTimeAsSeconds => Time.GetTicksMsec() / 1000f;
+
 		public float startTime;
-		public float Elapsed => Time.time - startTime;
+		public float Elapsed => GodotTimeAsSeconds - startTime;
 
 		public Timer()
 		{
-			startTime = Time.time;
+			startTime = GodotTimeAsSeconds;
 		}
 
 		public void Reset()
 		{
-			startTime = Time.time;
+			startTime = GodotTimeAsSeconds;
 		}
 
 		public static bool operator >(Timer timer, float duration)

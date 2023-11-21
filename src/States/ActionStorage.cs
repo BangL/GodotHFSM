@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using UnityHFSM.Exceptions;
+using GodotHFSM.Exceptions;
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// Class that can store and run actions.

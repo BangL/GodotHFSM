@@ -1,5 +1,5 @@
 
-namespace UnityHFSM.Exceptions
+namespace GodotHFSM.Exceptions
 {
 	public static class ExceptionFormatter
 	{

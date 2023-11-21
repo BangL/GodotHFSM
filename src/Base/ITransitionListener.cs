@@ -1,5 +1,5 @@
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	public interface ITransitionListener
 	{

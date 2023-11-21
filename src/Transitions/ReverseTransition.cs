@@ -1,4 +1,4 @@
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// A ReverseTransition wraps another transition, but reverses it. The "from"

@@ -1,5 +1,5 @@
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// A subset of features that every parent state machine has to provide.

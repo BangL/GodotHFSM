@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityHFSM.Exceptions
+namespace GodotHFSM.Exceptions
 {
 	[Serializable]
 	public class StateMachineException : Exception

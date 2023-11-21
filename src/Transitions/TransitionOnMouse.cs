@@ -1,23 +1,23 @@
-﻿using UnityEngine;
+﻿using Godot;
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	public static class TransitionOnMouse
 	{
 		public class Down<TStateId> : TransitionBase<TStateId>
 		{
-			private int button;
+			private readonly MouseButton button;
 
 			/// <summary>
 			/// Initialises a new transition that triggers, while a mouse button is down.
-			/// It behaves like Input.GetMouseButton(...).
+			/// It behaves like Input.IsMouseButtonPressed(...).
 			/// </summary>
 			/// <param name="button">The mouse button to watch.</param>
 			/// <returns></returns>
 			public Down(
 					TStateId from,
 					TStateId to,
-					int button,
+					MouseButton button,
 					bool forceInstantly = false) : base(from, to, forceInstantly)
 			{
 				this.button = button;
@@ -25,23 +25,23 @@ namespace UnityHFSM
 
 			public override bool ShouldTransition()
 			{
-				return Input.GetMouseButton(button);
+				return Input.IsMouseButtonPressed(button);
 			}
 		}
 
 		public class Release<TStateId> : TransitionBase<TStateId>
 		{
-			private int button;
+			private readonly MouseButton button;
+			private bool? _wasPressed = null;
 
 			/// <summary>
 			/// Initialises a new transition that triggers, when a mouse button was just down and is up now.
-			/// It behaves like Input.GetMouseButtonUp(...).
 			/// </summary>
 			/// <param name="button">The mouse button to watch.</param>
 			public Release(
 					TStateId from,
 					TStateId to,
-					int button,
+					MouseButton button,
 					bool forceInstantly = false) : base(from, to, forceInstantly)
 			{
 				this.button = button;
@@ -49,23 +49,26 @@ namespace UnityHFSM
 
 			public override bool ShouldTransition()
 			{
-				return Input.GetMouseButtonUp(button);
+				bool isPressed = Input.IsMouseButtonPressed(button);
+				bool shouldTransition = _wasPressed.HasValue && _wasPressed.Value && !isPressed;
+				_wasPressed = isPressed;
+				return shouldTransition;
 			}
 		}
 
 		public class Press<TStateId> : TransitionBase<TStateId>
 		{
-			private int button;
+			private readonly MouseButton button;
+			private bool? _wasPressed = null;
 
 			/// <summary>
 			/// Initialises a new transition that triggers, when a mouse button was just up and is down now.
-			/// It behaves like Input.GetMouseButtonDown(...).
 			/// </summary>
 			/// <param name="button">The mouse button to watch.</param>
 			public Press(
 					TStateId from,
 					TStateId to,
-					int button,
+					MouseButton button,
 					bool forceInstantly = false) : base(from, to, forceInstantly)
 			{
 				this.button = button;
@@ -73,23 +76,26 @@ namespace UnityHFSM
 
 			public override bool ShouldTransition()
 			{
-				return Input.GetMouseButtonDown(button);
+				bool isPressed = Input.IsMouseButtonPressed(button);
+				bool shouldTransition = _wasPressed.HasValue && !_wasPressed.Value && isPressed;
+				_wasPressed = isPressed;
+				return shouldTransition;
 			}
 		}
 
 		public class Up<TStateId> : TransitionBase<TStateId>
 		{
-			private int button;
+			private readonly MouseButton button;
 
 			/// <summary>
 			/// Initialises a new transition that triggers, while a mouse button is up.
-			/// It behaves like ! Input.GetMouseButton(...).
+			/// It behaves like ! Input.IsMouseButtonPressed(...).
 			/// </summary>
 			/// <param name="button">The mouse button to watch.</param>
 			public Up(
 					TStateId from,
 					TStateId to,
-					int button,
+					MouseButton button,
 					bool forceInstantly = false) : base(from, to, forceInstantly)
 			{
 				this.button = button;
@@ -97,7 +103,7 @@ namespace UnityHFSM
 
 			public override bool ShouldTransition()
 			{
-				return !Input.GetMouseButton(button);
+				return !Input.IsMouseButtonPressed(button);
 			}
 		}
 
@@ -106,7 +112,7 @@ namespace UnityHFSM
 			public Down(
 				string @from,
 				string to,
-				int button,
+				MouseButton button,
 				bool forceInstantly = false) : base(@from, to, button, forceInstantly)
 			{
 			}
@@ -117,7 +123,7 @@ namespace UnityHFSM
 			public Release(
 				string @from,
 				string to,
-				int button,
+				MouseButton button,
 				bool forceInstantly = false) : base(@from, to, button, forceInstantly)
 			{
 			}
@@ -128,7 +134,7 @@ namespace UnityHFSM
 			public Press(
 				string @from,
 				string to,
-				int button,
+				MouseButton button,
 				bool forceInstantly = false) : base(@from, to, button, forceInstantly)
 			{
 			}
@@ -139,7 +145,7 @@ namespace UnityHFSM
 			public Up(
 				string @from,
 				string to,
-				int button,
+				MouseButton button,
 				bool forceInstantly = false) : base(@from, to, button, forceInstantly)
 			{
 			}

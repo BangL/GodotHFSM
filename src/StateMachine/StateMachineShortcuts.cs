@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	public static class StateMachineShortcuts
 	{

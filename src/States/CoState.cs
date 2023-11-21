@@ -1,8 +1,8 @@
 using System.Collections;
-using UnityEngine;
 using System;
+using HCoroutines;
 
-namespace UnityHFSM
+namespace GodotHFSM
 {
 	/// <summary>
 	/// A state that can run a Unity coroutine as its OnLogic method.
@@ -10,8 +10,6 @@ namespace UnityHFSM
 	/// <inheritdoc />
 	public class CoState<TStateId, TEvent> : ActionState<TStateId, TEvent>
 	{
-		private MonoBehaviour mono;
-
 		private Func<IEnumerator> coroutineCreator;
 		private Action<CoState<TStateId, TEvent>> onEnter;
 		private Action<CoState<TStateId, TEvent>> onExit;
@@ -42,7 +40,6 @@ namespace UnityHFSM
 		/// <param name="loop">If true, it will loop the coroutine, running it again once it has completed.</param>
 		/// <inheritdoc cref="StateBase{T}(bool, bool)"/>
 		public CoState(
-				MonoBehaviour mono,
 				Func<CoState<TStateId, TEvent>, IEnumerator> coroutine,
 				Action<CoState<TStateId, TEvent>> onEnter = null,
 				Action<CoState<TStateId, TEvent>> onExit = null,
@@ -51,7 +48,6 @@ namespace UnityHFSM
 				bool needsExitTime = false,
 				bool isGhostState = false) : base(needsExitTime, isGhostState)
 		{
-			this.mono = mono;
 			this.coroutineCreator = () => coroutine(this);
 			this.onEnter = onEnter;
 			this.onExit = onExit;
@@ -72,7 +68,6 @@ namespace UnityHFSM
 		/// 	bool
 		/// )"/>
 		public CoState(
-				MonoBehaviour mono,
 				Func<IEnumerator> coroutine,
 				Action<CoState<TStateId, TEvent>> onEnter = null,
 				Action<CoState<TStateId, TEvent>> onExit = null,
@@ -81,7 +76,6 @@ namespace UnityHFSM
 				bool needsExitTime = false,
 				bool isGhostState = false) : base(needsExitTime, isGhostState)
 		{
-			this.mono = mono;
 			this.coroutineCreator = coroutine;
 			this.onEnter = onEnter;
 			this.onExit = onExit;
@@ -99,7 +93,7 @@ namespace UnityHFSM
 
 			if (coroutineCreator != null)
 			{
-				activeCoroutine = mono.StartCoroutine(
+				activeCoroutine = Co.Coroutine(
 					shouldLoopCoroutine
 					? LoopCoroutine()
 					: coroutineCreator()
@@ -141,7 +135,7 @@ namespace UnityHFSM
 		{
 			if (activeCoroutine != null)
 			{
-				mono.StopCoroutine(activeCoroutine);
+				activeCoroutine.Kill();
 				activeCoroutine = null;
 			}
 
@@ -162,7 +156,6 @@ namespace UnityHFSM
 	{
 		/// <inheritdoc />
 		public CoState(
-			MonoBehaviour mono,
 			Func<CoState<TStateId, string>, IEnumerator> coroutine,
 			Action<CoState<TStateId, string>> onEnter = null,
 			Action<CoState<TStateId, string>> onExit = null,
@@ -171,7 +164,6 @@ namespace UnityHFSM
 			bool needsExitTime = false,
 			bool isGhostState = false)
 			: base(
-				mono,
 				coroutine: coroutine,
 				onEnter: onEnter,
 				onExit: onExit,
@@ -184,7 +176,6 @@ namespace UnityHFSM
 
 		/// <inheritdoc />
 		public CoState(
-			MonoBehaviour mono,
 			Func<IEnumerator> coroutine,
 			Action<CoState<TStateId, string>> onEnter = null,
 			Action<CoState<TStateId, string>> onExit = null,
@@ -193,7 +184,6 @@ namespace UnityHFSM
 			bool needsExitTime = false,
 			bool isGhostState = false)
 			: base(
-				mono,
 				coroutine: coroutine,
 				onEnter: onEnter,
 				onExit: onExit,
@@ -210,7 +200,6 @@ namespace UnityHFSM
 	{
 		/// <inheritdoc />
 		public CoState(
-			MonoBehaviour mono,
 			Func<CoState<string, string>, IEnumerator> coroutine,
 			Action<CoState<string, string>> onEnter = null,
 			Action<CoState<string, string>> onExit = null,
@@ -219,7 +208,6 @@ namespace UnityHFSM
 			bool needsExitTime = false,
 			bool isGhostState = false)
 			: base(
-				mono,
 				coroutine: coroutine,
 				onEnter: onEnter,
 				onExit: onExit,
@@ -232,7 +220,6 @@ namespace UnityHFSM
 
 		/// <inheritdoc />
 		public CoState(
-			MonoBehaviour mono,
 			Func<IEnumerator> coroutine,
 			Action<CoState<string, string>> onEnter = null,
 			Action<CoState<string, string>> onExit = null,
@@ -241,7 +228,6 @@ namespace UnityHFSM
 			bool needsExitTime = false,
 			bool isGhostState = false)
 			: base(
-				mono,
 				coroutine: coroutine,
 				onEnter: onEnter,
 				onExit: onExit,
