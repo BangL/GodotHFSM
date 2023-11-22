@@ -27,7 +27,7 @@ namespace GodotHFSM
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			TStateId name,
 			Action<State<TStateId, TEvent>> onEnter = null,
-			Action<State<TStateId, TEvent>> onLogic = null,
+			Action<State<TStateId, TEvent>, double> onLogic = null,
 			Action<State<TStateId, TEvent>> onExit = null,
 			Func<State<TStateId, TEvent>, bool> canExit = null,
 			bool needsExitTime = false,

@@ -14,8 +14,10 @@ namespace GodotHFSM
 	{
 		private Action<HybridStateMachine<TOwnId, TStateId, TEvent>>
 			beforeOnEnter, afterOnEnter,
-			beforeOnLogic, afterOnLogic,
 			beforeOnExit, afterOnExit;
+
+		private Action<HybridStateMachine<TOwnId, TStateId, TEvent>, double>
+			beforeOnLogic, afterOnLogic;
 
 		// Lazily initialised
 		private ActionStorage<TEvent> actionStorage;
@@ -37,10 +39,10 @@ namespace GodotHFSM
 				Action<HybridStateMachine<TOwnId, TStateId, TEvent>> beforeOnEnter = null,
 				Action<HybridStateMachine<TOwnId, TStateId, TEvent>> afterOnEnter = null,
 
-				Action<HybridStateMachine<TOwnId, TStateId, TEvent>> beforeOnLogic = null,
-				Action<HybridStateMachine<TOwnId, TStateId, TEvent>> afterOnLogic = null,
+				Action<HybridStateMachine<TOwnId, TStateId, TEvent>, double> beforeOnLogic = null,
+				Action<HybridStateMachine<TOwnId, TStateId, TEvent>, double> afterOnLogic = null,
 
-				Action<HybridStateMachine<TOwnId, TStateId, TEvent>> beforeOnExit= null,
+				Action<HybridStateMachine<TOwnId, TStateId, TEvent>> beforeOnExit = null,
 				Action<HybridStateMachine<TOwnId, TStateId, TEvent>> afterOnExit = null,
 
 				bool needsExitTime = false,
@@ -67,11 +69,11 @@ namespace GodotHFSM
 			afterOnEnter?.Invoke(this);
 		}
 
-		public override void OnLogic()
+		public override void OnLogic(double delta)
 		{
-			beforeOnLogic?.Invoke(this);
-			base.OnLogic();
-			afterOnLogic?.Invoke(this);
+			beforeOnLogic?.Invoke(this, delta);
+			base.OnLogic(delta);
+			afterOnLogic?.Invoke(this, delta);
 		}
 
 		public override void OnExit()
@@ -137,8 +139,8 @@ namespace GodotHFSM
 			Action<HybridStateMachine<TStateId, TStateId, TEvent>> beforeOnEnter = null,
 			Action<HybridStateMachine<TStateId, TStateId, TEvent>> afterOnEnter = null,
 
-			Action<HybridStateMachine<TStateId, TStateId, TEvent>> beforeOnLogic = null,
-			Action<HybridStateMachine<TStateId, TStateId, TEvent>> afterOnLogic = null,
+			Action<HybridStateMachine<TStateId, TStateId, TEvent>, double> beforeOnLogic = null,
+			Action<HybridStateMachine<TStateId, TStateId, TEvent>, double> afterOnLogic = null,
 
 			Action<HybridStateMachine<TStateId, TStateId, TEvent>> beforeOnExit = null,
 			Action<HybridStateMachine<TStateId, TStateId, TEvent>> afterOnExit = null,
@@ -163,10 +165,10 @@ namespace GodotHFSM
 			Action<HybridStateMachine<TStateId, TStateId, string>> beforeOnEnter = null,
 			Action<HybridStateMachine<TStateId, TStateId, string>> afterOnEnter = null,
 
-			Action<HybridStateMachine<TStateId, TStateId, string>> beforeOnLogic = null,
-			Action<HybridStateMachine<TStateId, TStateId, string>> afterOnLogic = null,
+			Action<HybridStateMachine<TStateId, TStateId, string>, double> beforeOnLogic = null,
+			Action<HybridStateMachine<TStateId, TStateId, string>, double> afterOnLogic = null,
 
-			Action<HybridStateMachine<TStateId, TStateId, string>> beforeOnExit= null,
+			Action<HybridStateMachine<TStateId, TStateId, string>> beforeOnExit = null,
 			Action<HybridStateMachine<TStateId, TStateId, string>> afterOnExit = null,
 
 			bool needsExitTime = false,
@@ -189,10 +191,10 @@ namespace GodotHFSM
 			Action<HybridStateMachine<string, string, string>> beforeOnEnter = null,
 			Action<HybridStateMachine<string, string, string>> afterOnEnter = null,
 
-			Action<HybridStateMachine<string, string, string>> beforeOnLogic = null,
-			Action<HybridStateMachine<string, string, string>> afterOnLogic = null,
+			Action<HybridStateMachine<string, string, string>, double> beforeOnLogic = null,
+			Action<HybridStateMachine<string, string, string>, double> afterOnLogic = null,
 
-			Action<HybridStateMachine<string, string, string>> beforeOnExit= null,
+			Action<HybridStateMachine<string, string, string>> beforeOnExit = null,
 			Action<HybridStateMachine<string, string, string>> afterOnExit = null,
 
 			bool needsExitTime = false,

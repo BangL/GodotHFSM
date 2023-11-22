@@ -47,7 +47,7 @@ namespace GodotHFSM
 		/// <summary>
 		/// Called while this state is active.
 		/// </summary>
-		public virtual void OnLogic()
+		public virtual void OnLogic(double delta)
 		{
 
 		}

@@ -388,7 +388,7 @@ namespace GodotHFSM
 		/// calls the active state's logic function (after the state transition, if
 		/// one occurred).
 		/// </summary>
-		public override void OnLogic()
+		public override void OnLogic(double delta)
 		{
 			EnsureIsInitializedFor("Running OnLogic");
 
@@ -399,7 +399,7 @@ namespace GodotHFSM
 				goto runOnLogic;
 
 			runOnLogic:
-			activeState?.OnLogic();
+			activeState?.OnLogic(delta);
 		}
 
 		public override void OnExit()

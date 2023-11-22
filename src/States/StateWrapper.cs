@@ -15,11 +15,12 @@ namespace GodotHFSM
 				beforeOnEnter,
 				afterOnEnter,
 
-				beforeOnLogic,
-				afterOnLogic,
-
 				beforeOnExit,
 				afterOnExit;
+
+			private Action<StateBase<TStateId>, double>
+				beforeOnLogic,
+				afterOnLogic;
 
 			private StateBase<TStateId> state;
 
@@ -29,8 +30,8 @@ namespace GodotHFSM
 					Action<StateBase<TStateId>> beforeOnEnter = null,
 					Action<StateBase<TStateId>> afterOnEnter = null,
 
-					Action<StateBase<TStateId>> beforeOnLogic = null,
-					Action<StateBase<TStateId>> afterOnLogic = null,
+					Action<StateBase<TStateId>, double> beforeOnLogic = null,
+					Action<StateBase<TStateId>, double> afterOnLogic = null,
 
 					Action<StateBase<TStateId>> beforeOnExit = null,
 					Action<StateBase<TStateId>> afterOnExit = null) : base(state.needsExitTime, state.isGhostState)
@@ -62,11 +63,11 @@ namespace GodotHFSM
 				afterOnEnter?.Invoke(this);
 			}
 
-			public override void OnLogic()
+			public override void OnLogic(double delta)
 			{
-				beforeOnLogic?.Invoke(this);
-				state.OnLogic();
-				afterOnLogic?.Invoke(this);
+				beforeOnLogic?.Invoke(this, delta);
+				state.OnLogic(delta);
+				afterOnLogic?.Invoke(this, delta);
 			}
 
 			public override void OnExit()
@@ -101,11 +102,12 @@ namespace GodotHFSM
 			beforeOnEnter,
 			afterOnEnter,
 
-			beforeOnLogic,
-			afterOnLogic,
-
 			beforeOnExit,
 			afterOnExit;
+
+		private Action<StateBase<TStateId>, double>
+			beforeOnLogic,
+			afterOnLogic;
 
 		/// <summary>
 		/// Initialises a new instance of the StateWrapper class
@@ -114,8 +116,8 @@ namespace GodotHFSM
 				Action<StateBase<TStateId>> beforeOnEnter = null,
 				Action<StateBase<TStateId>> afterOnEnter = null,
 
-				Action<StateBase<TStateId>> beforeOnLogic = null,
-				Action<StateBase<TStateId>> afterOnLogic = null,
+				Action<StateBase<TStateId>, double> beforeOnLogic = null,
+				Action<StateBase<TStateId>, double> afterOnLogic = null,
 
 				Action<StateBase<TStateId>> beforeOnExit = null,
 				Action<StateBase<TStateId>> afterOnExit = null)
@@ -151,8 +153,8 @@ namespace GodotHFSM
 			Action<StateBase<string>> beforeOnEnter = null,
 			Action<StateBase<string>> afterOnEnter = null,
 
-			Action<StateBase<string>> beforeOnLogic = null,
-			Action<StateBase<string>> afterOnLogic = null,
+			Action<StateBase<string>, double> beforeOnLogic = null,
+			Action<StateBase<string>, double> afterOnLogic = null,
 
 			Action<StateBase<string>> beforeOnExit = null,
 			Action<StateBase<string>> afterOnExit = null) : base(

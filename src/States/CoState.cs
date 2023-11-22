@@ -124,7 +124,7 @@ namespace GodotHFSM
 			}
 		}
 
-		public override void OnLogic()
+		public override void OnLogic(double delta)
 		{
 			if (needsExitTime && canExit != null && fsm.HasPendingTransition && canExit(this))
 			{

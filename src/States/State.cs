@@ -9,7 +9,7 @@ namespace GodotHFSM
 	public class State<TStateId, TEvent> : ActionState<TStateId, TEvent>
 	{
 		private Action<State<TStateId, TEvent>> onEnter;
-		private Action<State<TStateId, TEvent>> onLogic;
+		private Action<State<TStateId, TEvent>, double> onLogic;
 		private Action<State<TStateId, TEvent>> onExit;
 		private Func<State<TStateId, TEvent>, bool> canExit;
 
@@ -30,7 +30,7 @@ namespace GodotHFSM
 		/// 	state change (true).</param>
 		public State(
 				Action<State<TStateId, TEvent>> onEnter = null,
-				Action<State<TStateId, TEvent>> onLogic = null,
+				Action<State<TStateId, TEvent>, double> onLogic = null,
 				Action<State<TStateId, TEvent>> onExit = null,
 				Func<State<TStateId, TEvent>, bool> canExit = null,
 				bool needsExitTime = false,
@@ -51,14 +51,14 @@ namespace GodotHFSM
 			onEnter?.Invoke(this);
 		}
 
-		public override void OnLogic()
+		public override void OnLogic(double delta)
 		{
 			if (needsExitTime && canExit != null && fsm.HasPendingTransition && canExit(this))
 			{
 				fsm.StateCanExit();
 			}
 
-			onLogic?.Invoke(this);
+			onLogic?.Invoke(this, delta);
 		}
 
 		public override void OnExit()
@@ -81,7 +81,7 @@ namespace GodotHFSM
 		/// <inheritdoc />
 		public State(
 			Action<State<TStateId, string>> onEnter = null,
-			Action<State<TStateId, string>> onLogic = null,
+			Action<State<TStateId, string>, double> onLogic = null,
 			Action<State<TStateId, string>> onExit = null,
 			Func<State<TStateId, string>, bool> canExit = null,
 			bool needsExitTime = false,
@@ -103,7 +103,7 @@ namespace GodotHFSM
 		/// <inheritdoc />
 		public State(
 			Action<State<string, string>> onEnter = null,
-			Action<State<string, string>> onLogic = null,
+			Action<State<string, string>, double> onLogic = null,
 			Action<State<string, string>> onExit = null,
 			Func<State<string, string>, bool> canExit = null,
 			bool needsExitTime = false,
