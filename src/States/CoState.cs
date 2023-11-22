@@ -1,6 +1,7 @@
 using System.Collections;
 using System;
 using HCoroutines;
+using Godot;
 
 namespace GodotHFSM
 {
@@ -93,7 +94,7 @@ namespace GodotHFSM
 
 			if (coroutineCreator != null)
 			{
-				activeCoroutine = Co.Coroutine(
+				activeCoroutine = Co.Run(
 					shouldLoopCoroutine
 					? LoopCoroutine()
 					: coroutineCreator()
@@ -135,7 +136,10 @@ namespace GodotHFSM
 		{
 			if (activeCoroutine != null)
 			{
-				activeCoroutine.Kill();
+				if (activeCoroutine.isPlaying)
+				{
+					activeCoroutine.Kill();
+				}
 				activeCoroutine = null;
 			}
 
