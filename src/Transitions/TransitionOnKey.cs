@@ -1,147 +1,145 @@
-﻿// using Godot;
+﻿namespace GodotHFSM;
 
-// namespace GodotHFSM
-// {
-// 	public static class TransitionOnKey
-// 	{
-// 		public class Down<TStateId> : TransitionBase<TStateId>
-// 		{
-// 			private KeyCode keyCode;
+using Godot;
 
-// 			/// <summary>
-// 			/// Initializes a new transition that triggers, while a key is down.
-// 			/// It behaves like Input.GetKey(...).
-// 			/// </summary>
-// 			/// <param name="key">The KeyCode of the key to watch.</param>
-// 			public Down(
-// 					TStateId from,
-// 					TStateId to,
-// 					KeyCode key,
-// 					bool forceInstantly = false) : base(from, to, forceInstantly)
-// 			{
-// 				keyCode = key;
-// 			}
+public static class TransitionOnKey {
+    public class Down<TStateId> : TransitionBase<TStateId> {
+        private readonly Key _keyCode;
 
-// 			public override bool ShouldTransition()
-// 			{
-// 				return Input.GetKey(keyCode);
-// 			}
-// 		}
+        /// <summary>
+        /// Initializes a new transition that triggers, while a key is down.
+        /// It behaves like Input.GetKey(...).
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="key">The KeyCode of the key to watch.</param>
+        /// <param name="forceInstantly"></param>
+        public Down(
+                    TStateId from,
+                    TStateId to,
+                    Key key,
+                    bool forceInstantly = false) : base(from, to, forceInstantly) {
+            _keyCode = key;
+        }
 
-// 		public class Release<TStateId> : TransitionBase<TStateId>
-// 		{
-// 			private KeyCode keyCode;
+        public override bool ShouldTransition() {
+            return Input.IsPhysicalKeyPressed(_keyCode);
+        }
+    }
 
-// 			/// <summary>
-// 			/// Initializes a new transition that triggers, when a key was just down and is up now.
-// 			/// It behaves like Input.GetKeyUp(...).
-// 			/// </summary>
-// 			/// <param name="key">The KeyCode of the key to watch.</param>
-// 			public Release(
-// 					TStateId from,
-// 					TStateId to,
-// 					KeyCode key,
-// 					bool forceInstantly = false) : base(from, to, forceInstantly)
-// 			{
-// 				keyCode = key;
-// 			}
+    public class Release<TStateId> : TransitionBase<TStateId> {
+        private readonly Key _keyCode;
+        private bool _wasPressed;
 
-// 			public override bool ShouldTransition()
-// 			{
-// 				return Input.GetKeyUp(keyCode);
-// 			}
-// 		}
+        /// <summary>
+        /// Initializes a new transition that triggers, when a key was just down and is up now.
+        /// It behaves like Input.GetKeyUp(...).
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="key">The KeyCode of the key to watch.</param>
+        /// <param name="forceInstantly"></param>
+        public Release(
+                    TStateId from,
+                    TStateId to,
+                    Key key,
+                    bool forceInstantly = false) : base(from, to, forceInstantly) {
+            _keyCode = key;
+        }
 
-// 		public class Press<TStateId> : TransitionBase<TStateId>
-// 		{
-// 			private KeyCode keyCode;
+        public override bool ShouldTransition() {
+            bool isPressed = Input.IsPhysicalKeyPressed(_keyCode);
+            bool shouldTransition = _wasPressed && !isPressed;
+            _wasPressed = isPressed;
+            return shouldTransition;
+        }
+    }
 
-// 			/// <summary>
-// 			/// Initializes a new transition that triggers, when a key was just up and is down now.
-// 			/// It behaves like Input.GetKeyDown(...).
-// 			/// </summary>
-// 			/// <param name="key">The KeyCode of the key to watch.</param>
-// 			public Press(
-// 					TStateId from,
-// 					TStateId to,
-// 					KeyCode key,
-// 					bool forceInstantly = false) : base(from, to, forceInstantly)
-// 			{
-// 				keyCode = key;
-// 			}
+    public class Press<TStateId> : TransitionBase<TStateId> {
+        private readonly Key _keyCode;
+        private bool _wasPressed;
 
-// 			public override bool ShouldTransition()
-// 			{
-// 				return Input.GetKeyDown(keyCode);
-// 			}
-// 		}
+        /// <summary>
+        /// Initializes a new transition that triggers, when a key was just up and is down now.
+        /// It behaves like Input.GetKeyDown(...).
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="key">The KeyCode of the key to watch.</param>
+        /// <param name="forceInstantly"></param>
+        public Press(
+                    TStateId from,
+                    TStateId to,
+                    Key key,
+                    bool forceInstantly = false) : base(from, to, forceInstantly) {
+            _keyCode = key;
+        }
 
-// 		public class Up<TStateId> : TransitionBase<TStateId>
-// 		{
-// 			private KeyCode keyCode;
+        public override bool ShouldTransition() {
+            bool isPressed = Input.IsPhysicalKeyPressed(_keyCode);
+            bool shouldTransition = !_wasPressed && isPressed;
+            _wasPressed = isPressed;
+            return shouldTransition;
+        }
+    }
 
-// 			/// <summary>
-// 			/// Initializes a new transition that triggers, while a key is up.
-// 			/// It behaves like ! Input.GetKey(...).
-// 			/// </summary>
-// 			/// <param name="key">The KeyCode of the key to watch.</param>
-// 			public Up(
-// 					TStateId from,
-// 					TStateId to,
-// 					KeyCode key,
-// 					bool forceInstantly = false) : base(from, to, forceInstantly)
-// 			{
-// 				keyCode = key;
-// 			}
+    public class Up<TStateId> : TransitionBase<TStateId> {
+        private readonly Key _keyCode;
 
-// 			public override bool ShouldTransition()
-// 			{
-// 				return !Input.GetKey(keyCode);
-// 			}
-// 		}
+        /// <summary>
+        /// Initializes a new transition that triggers, while a key is up.
+        /// It behaves like ! Input.GetKey(...).
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="key">The KeyCode of the key to watch.</param>
+        /// <param name="forceInstantly"></param>
+        public Up(
+                    TStateId from,
+                    TStateId to,
+                Key key,
+                    bool forceInstantly = false) : base(from, to, forceInstantly) {
+            _keyCode = key;
+        }
 
-// 		public class Down : Down<string>
-// 		{
-// 			public Down(
-// 				string @from,
-// 				string to,
-// 				KeyCode key,
-// 				bool forceInstantly = false) : base(@from, to, key, forceInstantly)
-// 			{
-// 			}
-// 		}
+        public override bool ShouldTransition() {
+            return !Input.IsPhysicalKeyPressed(_keyCode);
+        }
+    }
 
-// 		public class Release : Release<string>
-// 		{
-// 			public Release(
-// 				string @from,
-// 				string to,
-// 				KeyCode key,
-// 				bool forceInstantly = false) : base(@from, to, key, forceInstantly)
-// 			{
-// 			}
-// 		}
+    public class Down : Down<string> {
+        public Down(
+            string @from,
+            string to,
+        Key key,
+            bool forceInstantly = false) : base(@from, to, key, forceInstantly) {
+        }
+    }
 
-// 		public class Press : Press<string>
-// 		{
-// 			public Press(
-// 				string @from,
-// 				string to,
-// 				KeyCode key,
-// 				bool forceInstantly = false) : base(@from, to, key, forceInstantly)
-// 			{
-// 			}
-// 		}
+    public class Release : Release<string> {
+        public Release(
+            string @from,
+            string to,
+        Key key,
+            bool forceInstantly = false) : base(@from, to, key, forceInstantly) {
+        }
+    }
 
-// 		public class Up : Up<string>
-// 		{
-// 			public Up(
-// 				string @from,
-// 				string to,
-// 				KeyCode key,
-// 				bool forceInstantly = false) : base(@from, to, key, forceInstantly)
-// 			{
-// 			}
-// 		}
-// 	}
-// }
+    public class Press : Press<string> {
+        public Press(
+            string @from,
+            string to,
+        Key key,
+            bool forceInstantly = false) : base(@from, to, key, forceInstantly) {
+        }
+    }
+
+    public class Up : Up<string> {
+        public Up(
+            string @from,
+            string to,
+        Key key,
+            bool forceInstantly = false) : base(@from, to, key, forceInstantly) {
+        }
+    }
+}
