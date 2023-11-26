@@ -9,4 +9,3 @@
 - Disabled TransitionOnKey and CoState code parts (for now). (TODO)
 - Removed UnityHFSM docs (for now, as they need to be rewritten or atleast fixed for GodotHFSM, when done). (TODO)
 
----

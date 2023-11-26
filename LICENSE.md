@@ -1,4 +1,4 @@
-MIT License
+# MIT License
 
 Copyright (c) 2020 Inspiaaa (UnityHFSM), 2023 BangL (GodotHFSM)
 
