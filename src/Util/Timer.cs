@@ -3,7 +3,7 @@ namespace GodotHFSM;
 using Godot;
 
 /// <summary>
-/// Default timer that calculates the elapsed time based on Time.time.
+/// Default timer that calculates the elapsed time based on Time.GetTicksMsec().
 /// </summary>
 public class Timer : ITimer {
     private static float GodotTimeAsSeconds => Time.GetTicksMsec() / 1000f;
