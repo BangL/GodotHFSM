@@ -1,9 +1,6 @@
+namespace GodotHFSM;
 
-namespace GodotHFSM
-{
-	public interface ITransitionListener
-	{
-		void BeforeTransition();
-		void AfterTransition();
-	}
+public interface ITransitionListener {
+    void BeforeTransition();
+    void AfterTransition();
 }

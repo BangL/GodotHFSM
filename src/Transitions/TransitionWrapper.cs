@@ -1,119 +1,107 @@
-﻿using System;
+﻿namespace GodotHFSM;
 
-namespace GodotHFSM
-{
-	/// <summary>
-	/// A class that allows you to run additional functions (companion code)
-	/// before and after the wrapped state's code.
-	/// </summary>
-	public class TransitionWrapper<TStateId>
-	{
-		public class WrappedTransition : TransitionBase<TStateId>
-		{
-			private Action<TransitionBase<TStateId>>
-				beforeOnEnter,
-				afterOnEnter,
+using System;
 
-				beforeShouldTransition,
-				afterShouldTransition;
+/// <summary>
+/// A class that allows you to run additional functions (companion code)
+/// before and after the wrapped state's code.
+/// </summary>
+/// <typeparam name="TStateId"></typeparam>
+public class TransitionWrapper<TStateId> {
+    public class WrappedTransition : TransitionBase<TStateId> {
+        private readonly Action<TransitionBase<TStateId>>
+            _beforeOnEnter,
+            _afterOnEnter,
 
-			private TransitionBase<TStateId> transition;
+            _beforeShouldTransition,
+            _afterShouldTransition;
 
-			public WrappedTransition(
-					TransitionBase<TStateId> transition,
+        private readonly TransitionBase<TStateId> _transition;
 
-					Action<TransitionBase<TStateId>> beforeOnEnter = null,
-					Action<TransitionBase<TStateId>> afterOnEnter = null,
+        public WrappedTransition(
+                TransitionBase<TStateId> transition,
 
-					Action<TransitionBase<TStateId>> beforeShouldTransition = null,
-					Action<TransitionBase<TStateId>> afterShouldTransition = null) : base(
-					transition.from, transition.to, forceInstantly: transition.forceInstantly)
-			{
-				this.transition = transition;
+                Action<TransitionBase<TStateId>> beforeOnEnter = null,
+                Action<TransitionBase<TStateId>> afterOnEnter = null,
 
-				this.beforeOnEnter = beforeOnEnter;
-				this.afterOnEnter = afterOnEnter;
+                Action<TransitionBase<TStateId>> beforeShouldTransition = null,
+                Action<TransitionBase<TStateId>> afterShouldTransition = null) : base(
+                transition.From, transition.To, forceInstantly: transition.ForceInstantly) {
+            _transition = transition;
 
-				this.beforeShouldTransition = beforeShouldTransition;
-				this.afterShouldTransition = afterShouldTransition;
-			}
+            _beforeOnEnter = beforeOnEnter;
+            _afterOnEnter = afterOnEnter;
 
-			public override void Init()
-			{
-				transition.fsm = this.fsm;
-			}
+            _beforeShouldTransition = beforeShouldTransition;
+            _afterShouldTransition = afterShouldTransition;
+        }
 
-			public override void OnEnter()
-			{
-				beforeOnEnter?.Invoke(transition);
-				transition.OnEnter();
-				afterOnEnter?.Invoke(transition);
-			}
+        public override void Init() {
+            _transition.Fsm = Fsm;
+        }
 
-			public override bool ShouldTransition()
-			{
-				beforeShouldTransition?.Invoke(transition);
-				bool shouldTransition = transition.ShouldTransition();
-				afterShouldTransition?.Invoke(transition);
-				return shouldTransition;
-			}
+        public override void OnEnter() {
+            _beforeOnEnter?.Invoke(_transition);
+            _transition.OnEnter();
+            _afterOnEnter?.Invoke(_transition);
+        }
 
-			public override void BeforeTransition()
-			{
-				transition.BeforeTransition();
-			}
+        public override bool ShouldTransition() {
+            _beforeShouldTransition?.Invoke(_transition);
+            bool shouldTransition = _transition.ShouldTransition();
+            _afterShouldTransition?.Invoke(_transition);
+            return shouldTransition;
+        }
 
-			public override void AfterTransition()
-			{
-				transition.AfterTransition();
-			}
-		}
+        public override void BeforeTransition() {
+            _transition.BeforeTransition();
+        }
 
-		private Action<TransitionBase<TStateId>>
-			beforeOnEnter,
-			afterOnEnter,
+        public override void AfterTransition() {
+            _transition.AfterTransition();
+        }
+    }
 
-			beforeShouldTransition,
-			afterShouldTransition;
+    private readonly Action<TransitionBase<TStateId>>
+        _beforeOnEnter,
+        _afterOnEnter,
 
-		public TransitionWrapper(
-				Action<TransitionBase<TStateId>> beforeOnEnter = null,
-				Action<TransitionBase<TStateId>> afterOnEnter = null,
+        _beforeShouldTransition,
+        _afterShouldTransition;
 
-				Action<TransitionBase<TStateId>> beforeShouldTransition = null,
-				Action<TransitionBase<TStateId>> afterShouldTransition = null)
-		{
-			this.beforeOnEnter = beforeOnEnter;
-			this.afterOnEnter = afterOnEnter;
+    public TransitionWrapper(
+            Action<TransitionBase<TStateId>> beforeOnEnter = null,
+            Action<TransitionBase<TStateId>> afterOnEnter = null,
 
-			this.beforeShouldTransition = beforeShouldTransition;
-			this.afterShouldTransition = afterShouldTransition;
-		}
+            Action<TransitionBase<TStateId>> beforeShouldTransition = null,
+            Action<TransitionBase<TStateId>> afterShouldTransition = null) {
+        _beforeOnEnter = beforeOnEnter;
+        _afterOnEnter = afterOnEnter;
 
-		public WrappedTransition Wrap(TransitionBase<TStateId> transition)
-		{
-			return new WrappedTransition(
-				transition,
-				beforeOnEnter,
-				afterOnEnter,
-				beforeShouldTransition,
-				afterShouldTransition
-			);
-		}
-	}
+        _beforeShouldTransition = beforeShouldTransition;
+        _afterShouldTransition = afterShouldTransition;
+    }
 
-	/// <inheritdoc />
-	public class TransitionWrapper : TransitionWrapper<string>
-	{
-		public TransitionWrapper(
-			Action<TransitionBase<string>> beforeOnEnter = null,
-			Action<TransitionBase<string>> afterOnEnter = null,
+    public WrappedTransition Wrap(TransitionBase<TStateId> transition) {
+        return new WrappedTransition(
+            transition,
+            _beforeOnEnter,
+            _afterOnEnter,
+            _beforeShouldTransition,
+            _afterShouldTransition
+        );
+    }
+}
 
-			Action<TransitionBase<string>> beforeShouldTransition = null,
-			Action<TransitionBase<string>> afterShouldTransition = null) : base(
-			beforeOnEnter, afterOnEnter,
-			beforeShouldTransition, afterShouldTransition)
-		{
-		}
-	}
+/// <inheritdoc />
+public class TransitionWrapper : TransitionWrapper<string> {
+    public TransitionWrapper(
+        Action<TransitionBase<string>> beforeOnEnter = null,
+        Action<TransitionBase<string>> afterOnEnter = null,
+
+        Action<TransitionBase<string>> beforeShouldTransition = null,
+        Action<TransitionBase<string>> afterShouldTransition = null) : base(
+        beforeOnEnter, afterOnEnter,
+        beforeShouldTransition, afterShouldTransition) {
+    }
 }

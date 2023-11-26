@@ -1,13 +1,10 @@
 
-namespace GodotHFSM
-{
-	public interface ITimer
-	{
-		float Elapsed
-		{
-			get;
-		}
+namespace GodotHFSM;
 
-		void Reset();
-	}
+public interface ITimer {
+    float Elapsed {
+        get;
+    }
+
+    void Reset();
 }
