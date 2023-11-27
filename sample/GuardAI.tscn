@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://yty4f68raf0h"]
 
 [ext_resource type="Script" path="res://sample/GuardAI.cs" id="1_0r3n4"]
-[ext_resource type="Texture2D" path="res://Pixel.png" id="2_gsgun"]
+[ext_resource type="Texture2D" uid="uid://ddrfr1ddpnhdp" path="res://Pixel.png" id="2_gsgun"]
 [ext_resource type="Script" path="res://sample/PlayerController.cs" id="3_8cd15"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blhp5"]

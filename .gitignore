@@ -416,3 +416,5 @@ bin/
 obj/
 .generated/
 .DS_Store
+
+addons/HCoroutines
