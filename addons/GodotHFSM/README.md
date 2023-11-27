@@ -11,7 +11,3 @@ It has a special focus on the temporal aspects of state transitions, making it i
 ## Why use GodotHFSM?
 
 - Don't! (yet)
-
-## Requirements
-
-[HCoroutines](https://github.com/BangL/HCoroutines) must be installed into `./addons/` !
