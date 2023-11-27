@@ -115,7 +115,7 @@ public class CoState<TStateId, TEvent> : ActionState<TStateId, TEvent> {
 
     public override void OnExit() {
         if (_activeCoroutine != null) {
-            if (_activeCoroutine.isPlaying) {
+            if (_activeCoroutine.IsPlaying) {
                 _activeCoroutine.Kill();
             }
             _activeCoroutine = null;
